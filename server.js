@@ -11,23 +11,24 @@ const harrow = require("./data/Harrow.json");
 const heathrow = require("./data/Heathrow.json");
 
 app.get("/", (req, res) => {
-  res.send("Hello and welcome to my app");
+  res.send("<center><h1>Hello and welcome to this city guide.</h1><p>/:city/:category returns :category list for :city</p></center>");
 });
 
-app.get("/:city", (req, res) => {
+app.get("/:city/:category", (req, res) => {
+  const category = req.params.category.toLowerCase();
   const city = req.params.city.toLowerCase();
-  if (city === "stratford") {
-    res.status(200).json(stratford);
-  } else if (city === "harrow") {
-    res.status(200).json(harrow);
-  } else if (city === "heathrow") {
-    res.status(200).json(heathrow);
-  } else {
-    res.sendStatus(404);
+  if (city && category) {
+    if (city === "stratford") {
+      res.status(200).json(stratford[category]);
+    } else if (city === "harrow") {
+      res.status(200).json(harrow[category]);
+    } else if (city === "heathrow") {
+      res.status(200).json(heathrow[category]);
+    } else {
+      res.sendStatus(404);
+    }
   }
 });
-
-// app.get("/")
 
 //Check that port 4040 is not in use otherwise set it to a different port
 const PORT = process.env.PORT || 4040;
